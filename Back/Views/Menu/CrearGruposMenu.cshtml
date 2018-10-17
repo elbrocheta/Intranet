@@ -1,0 +1,40 @@
+﻿@model Back.Models.MenuGrupo
+
+
+@{
+    ViewBag.Title = "Editar grupos de menú";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2><i class="fa fa-pen"></i> Editar </h2>
+<hr />
+
+@using (Html.BeginForm("CrearGruposMenu", "Menu", FormMethod.Post, new { id = "menugrupo-form" }))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ModuloId, new { @class = "text-info" })<br />
+        @Html.DropDownListFor(model => model.ModuloId, Model.Modulos, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ModuloId, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Nombre, new { @class = "text-info" })<br />
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Orden, new { @class = "text-info" })<br />
+        @Html.TextBoxFor(model => model.Orden, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Orden, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-default" value="Guardar">
+    </div>
+}
+
+@if (ViewBag.JavaScriptFunction != null)
+{
+    <script type="text/javascript">
+            @Html.Raw(ViewBag.JavaScriptFunction)
+    </script>
+}

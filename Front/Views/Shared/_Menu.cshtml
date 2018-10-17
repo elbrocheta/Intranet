@@ -1,0 +1,41 @@
+﻿<div id="menuLateral"></div>
+
+<script>
+
+    $(document).ready(function () {
+
+        var moduloId = '@ViewBag.Modulo';       
+
+        //Menú
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json",
+            url: "http://localhost:33333/WebApi/Menu/GetByModulo?id=" + moduloId ,
+            success: function (result) {
+
+                console.log(result);
+                $("#menuLateral").empty();
+
+                var _menuGrupo = "-";                
+
+                $.each(result, function (index, vMenuGrupo) {
+
+                    if (vMenuGrupo.MenuGrupo != _menuGrupo) {
+                        _menuGrupo = vMenuGrupo.MenuGrupo;
+                        $("#menuLateral").append("<h3>" + _menuGrupo + "</h3>");
+                    }
+
+                    $("#menuLateral").append("<p><i class='" + vMenuGrupo.Icono + "'></i>&nbsp;<a href='" + vMenuGrupo.Enlace+"'>" + vMenuGrupo.Texto + "</a></p>");   
+
+                });               
+
+            },
+            error: function (req, status, err) {
+                console.log('Something went wrong', req, status, err);
+            }
+        });
+
+    });
+
+</script>

@@ -1,0 +1,44 @@
+﻿@model Front.Models.Noticias
+
+<div class="col col-md-6">
+    <div class="card card-news">
+        <div class="card-header">
+
+            @{
+                var _icon = "fas fa-user";
+
+                //TODO: Cambiar por el enum
+                switch (Model.NoticiaTipo)
+                {
+                    case 1:
+                        _icon = "far fa-newspaper";
+                        break;
+                    case 2:
+                        _icon = "fa fa-desktop";
+                        break;
+                    case 3:
+                        _icon = "fas fa-exclamation-triangle";
+                        break;
+                    case 4:
+                        _icon = "far fa-user-circle";
+                        break;
+                    case 5:
+                        _icon = "fa fa-graduation-cap";
+                        break;
+                    case 6:
+                        _icon = "fa fa-globe";
+                        break;
+                }
+            }
+
+            <span class="@_icon fa-2x"></span>@Model.Titulo
+            <br />
+
+        </div>
+        <div class="card-body">
+            <p class="card-text">@Html.Raw(@Model.Contenido)</p>
+
+            <a href="#" class="btn btn-primary">Leer más</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,429 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PruebasIntranet2019Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MenuGrupoId" Type="int" Nullable="false" />
+          <Property Name="Texto" Type="varchar(max)" Nullable="false" />
+          <Property Name="Enlace" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Icono" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NuevaVentana" Type="tinyint" Nullable="false" />
+          <Property Name="Orden" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuGrupo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModuloId" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Orden" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Modulos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Modulo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Enlace" Type="varchar" MaxLength="100" />
+          <Property Name="Orden" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Noticias">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Titulo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Contenido" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FechaAlta" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioAlta" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NoticiaTipo" Type="int" Nullable="false" />
+          <Property Name="MostrarEnInicio" Type="int" />
+        </EntityType>
+        <EntityType Name="NoticiasTipo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tipo" Type="nvarchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vBack_GruposMenuList' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vBack_GruposMenuList">
+          <Key>
+            <PropertyRef Name="Modulo" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ModuloId" />
+            <PropertyRef Name="Nombre" />
+            <PropertyRef Name="Orden" />
+          </Key>
+          <Property Name="Modulo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ModuloId" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Orden" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vFront_Menu">
+          <Key>
+            <PropertyRef Name="MenuGrupo" />
+            <PropertyRef Name="ModuloId" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="MenuGrupoId" />
+            <PropertyRef Name="Texto" />
+            <PropertyRef Name="Enlace" />
+            <PropertyRef Name="Icono" />
+            <PropertyRef Name="NuevaVentana" />
+            <PropertyRef Name="Orden" />
+          </Key>
+          <Property Name="MenuGrupo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ModuloId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="MenuGrupoId" Type="int" Nullable="false" />
+          <Property Name="Texto" Type="varchar(max)" Nullable="false" />
+          <Property Name="Enlace" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Icono" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NuevaVentana" Type="tinyint" Nullable="false" />
+          <Property Name="Orden" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Menu_Menu">
+          <End Role="MenuGrupo" Type="Self.MenuGrupo" Multiplicity="1" />
+          <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuGrupo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Menu">
+              <PropertyRef Name="MenuGrupoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuGrupo_Modulos">
+          <End Role="Modulos" Type="Self.Modulos" Multiplicity="1" />
+          <End Role="MenuGrupo" Type="Self.MenuGrupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Modulos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MenuGrupo">
+              <PropertyRef Name="ModuloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Noticias_NoticiasTipo">
+          <End Role="NoticiasTipo" Type="Self.NoticiasTipo" Multiplicity="1" />
+          <End Role="Noticias" Type="Self.Noticias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NoticiasTipo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Noticias">
+              <PropertyRef Name="NoticiaTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PruebasIntranet2019ModelStoreContainer">
+          <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuGrupo" EntityType="Self.MenuGrupo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Modulos" EntityType="Self.Modulos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Noticias" EntityType="Self.Noticias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NoticiasTipo" EntityType="Self.NoticiasTipo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vBack_GruposMenuList" EntityType="Self.vBack_GruposMenuList" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vBack_GruposMenuList].[Modulo] AS [Modulo], 
+    [vBack_GruposMenuList].[Id] AS [Id], 
+    [vBack_GruposMenuList].[ModuloId] AS [ModuloId], 
+    [vBack_GruposMenuList].[Nombre] AS [Nombre], 
+    [vBack_GruposMenuList].[Orden] AS [Orden]
+    FROM [dbo].[vBack_GruposMenuList] AS [vBack_GruposMenuList]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vFront_Menu" EntityType="Self.vFront_Menu" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vFront_Menu].[MenuGrupo] AS [MenuGrupo], 
+    [vFront_Menu].[ModuloId] AS [ModuloId], 
+    [vFront_Menu].[Id] AS [Id], 
+    [vFront_Menu].[MenuGrupoId] AS [MenuGrupoId], 
+    [vFront_Menu].[Texto] AS [Texto], 
+    [vFront_Menu].[Enlace] AS [Enlace], 
+    [vFront_Menu].[Icono] AS [Icono], 
+    [vFront_Menu].[NuevaVentana] AS [NuevaVentana], 
+    [vFront_Menu].[Orden] AS [Orden]
+    FROM [dbo].[vFront_Menu] AS [vFront_Menu]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Menu_Menu" Association="Self.FK_Menu_Menu">
+            <End Role="MenuGrupo" EntitySet="MenuGrupo" />
+            <End Role="Menu" EntitySet="Menu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuGrupo_Modulos" Association="Self.FK_MenuGrupo_Modulos">
+            <End Role="Modulos" EntitySet="Modulos" />
+            <End Role="MenuGrupo" EntitySet="MenuGrupo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Noticias_NoticiasTipo" Association="Self.FK_Noticias_NoticiasTipo">
+            <End Role="NoticiasTipo" EntitySet="NoticiasTipo" />
+            <End Role="Noticias" EntitySet="Noticias" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PruebasIntranet2019Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="PruebasIntranet2019Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Noticias" EntityType="PruebasIntranet2019Model.Noticias" />
+          <EntitySet Name="NoticiasTipo" EntityType="PruebasIntranet2019Model.NoticiasTipo" />
+          <AssociationSet Name="FK_Noticias_NoticiasTipo" Association="PruebasIntranet2019Model.FK_Noticias_NoticiasTipo">
+            <End Role="NoticiasTipo" EntitySet="NoticiasTipo" />
+            <End Role="Noticias" EntitySet="Noticias" />
+          </AssociationSet>
+          <EntitySet Name="MenuGrupo" EntityType="PruebasIntranet2019Model.MenuGrupo" />
+          <EntitySet Name="Modulos" EntityType="PruebasIntranet2019Model.Modulos" />
+          <AssociationSet Name="FK_MenuGrupo_Modulos" Association="PruebasIntranet2019Model.FK_MenuGrupo_Modulos">
+            <End Role="Modulos" EntitySet="Modulos" />
+            <End Role="MenuGrupo" EntitySet="MenuGrupo" />
+          </AssociationSet>
+          <EntitySet Name="Menu" EntityType="PruebasIntranet2019Model.Menu" />
+          <AssociationSet Name="FK_Menu_Menu" Association="PruebasIntranet2019Model.FK_Menu_Menu">
+            <End Role="MenuGrupo" EntitySet="MenuGrupo" />
+            <End Role="Menu" EntitySet="Menu" />
+          </AssociationSet>
+          <EntitySet Name="vBack_GruposMenuList" EntityType="PruebasIntranet2019Model.vBack_GruposMenuList" />
+          <EntitySet Name="vFront_Menu" EntityType="PruebasIntranet2019Model.vFront_Menu" />
+        </EntityContainer>
+        <EntityType Name="Noticias">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Titulo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Contenido" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FechaAlta" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioAlta" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NoticiaTipo" Type="Int32" Nullable="false" />
+          <Property Name="MostrarEnInicio" Type="Int32" />
+        </EntityType>
+        <EntityType Name="NoticiasTipo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tipo" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Noticias_NoticiasTipo">
+          <End Type="PruebasIntranet2019Model.NoticiasTipo" Role="NoticiasTipo" Multiplicity="1" />
+          <End Type="PruebasIntranet2019Model.Noticias" Role="Noticias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NoticiasTipo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Noticias">
+              <PropertyRef Name="NoticiaTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MenuGrupo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModuloId" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Orden" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Modulos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Modulo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Enlace" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Orden" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_MenuGrupo_Modulos">
+          <End Type="PruebasIntranet2019Model.Modulos" Role="Modulos" Multiplicity="1" />
+          <End Type="PruebasIntranet2019Model.MenuGrupo" Role="MenuGrupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Modulos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MenuGrupo">
+              <PropertyRef Name="ModuloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MenuGrupoId" Type="Int32" Nullable="false" />
+          <Property Name="Texto" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Enlace" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Icono" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NuevaVentana" Type="Byte" Nullable="false" />
+          <Property Name="Orden" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Menu_Menu">
+          <End Type="PruebasIntranet2019Model.MenuGrupo" Role="MenuGrupo" Multiplicity="1" />
+          <End Type="PruebasIntranet2019Model.Menu" Role="Menu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuGrupo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Menu">
+              <PropertyRef Name="MenuGrupoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="vBack_GruposMenuList">
+          <Key>
+            <PropertyRef Name="Modulo" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ModuloId" />
+            <PropertyRef Name="Nombre" />
+            <PropertyRef Name="Orden" />
+          </Key>
+          <Property Name="Modulo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ModuloId" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Orden" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vFront_Menu">
+          <Key>
+            <PropertyRef Name="MenuGrupo" />
+            <PropertyRef Name="ModuloId" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="MenuGrupoId" />
+            <PropertyRef Name="Texto" />
+            <PropertyRef Name="Enlace" />
+            <PropertyRef Name="Icono" />
+            <PropertyRef Name="NuevaVentana" />
+            <PropertyRef Name="Orden" />
+          </Key>
+          <Property Name="MenuGrupo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ModuloId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="MenuGrupoId" Type="Int32" Nullable="false" />
+          <Property Name="Texto" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Enlace" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Icono" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NuevaVentana" Type="Byte" Nullable="false" />
+          <Property Name="Orden" Type="Int32" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PruebasIntranet2019ModelStoreContainer" CdmEntityContainer="PruebasIntranet2019Entities">
+          <EntitySetMapping Name="Noticias">
+            <EntityTypeMapping TypeName="PruebasIntranet2019Model.Noticias">
+              <MappingFragment StoreEntitySet="Noticias">
+                <ScalarProperty Name="MostrarEnInicio" ColumnName="MostrarEnInicio" />
+                <ScalarProperty Name="NoticiaTipo" ColumnName="NoticiaTipo" />
+                <ScalarProperty Name="UsuarioAlta" ColumnName="UsuarioAlta" />
+                <ScalarProperty Name="FechaAlta" ColumnName="FechaAlta" />
+                <ScalarProperty Name="Contenido" ColumnName="Contenido" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NoticiasTipo">
+            <EntityTypeMapping TypeName="PruebasIntranet2019Model.NoticiasTipo">
+              <MappingFragment StoreEntitySet="NoticiasTipo">
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuGrupo">
+            <EntityTypeMapping TypeName="PruebasIntranet2019Model.MenuGrupo">
+              <MappingFragment StoreEntitySet="MenuGrupo">
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Modulos">
+            <EntityTypeMapping TypeName="PruebasIntranet2019Model.Modulos">
+              <MappingFragment StoreEntitySet="Modulos">
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+                <ScalarProperty Name="Enlace" ColumnName="Enlace" />
+                <ScalarProperty Name="Modulo" ColumnName="Modulo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Menu">
+            <EntityTypeMapping TypeName="PruebasIntranet2019Model.Menu">
+              <MappingFragment StoreEntitySet="Menu">
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+                <ScalarProperty Name="NuevaVentana" ColumnName="NuevaVentana" />
+                <ScalarProperty Name="Icono" ColumnName="Icono" />
+                <ScalarProperty Name="Enlace" ColumnName="Enlace" />
+                <ScalarProperty Name="Texto" ColumnName="Texto" />
+                <ScalarProperty Name="MenuGrupoId" ColumnName="MenuGrupoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vBack_GruposMenuList">
+            <EntityTypeMapping TypeName="PruebasIntranet2019Model.vBack_GruposMenuList">
+              <MappingFragment StoreEntitySet="vBack_GruposMenuList">
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Modulo" ColumnName="Modulo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vFront_Menu">
+            <EntityTypeMapping TypeName="PruebasIntranet2019Model.vFront_Menu">
+              <MappingFragment StoreEntitySet="vFront_Menu">
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+                <ScalarProperty Name="NuevaVentana" ColumnName="NuevaVentana" />
+                <ScalarProperty Name="Icono" ColumnName="Icono" />
+                <ScalarProperty Name="Enlace" ColumnName="Enlace" />
+                <ScalarProperty Name="Texto" ColumnName="Texto" />
+                <ScalarProperty Name="MenuGrupoId" ColumnName="MenuGrupoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
+                <ScalarProperty Name="MenuGrupo" ColumnName="MenuGrupo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

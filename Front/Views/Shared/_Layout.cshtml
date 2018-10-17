@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intranet AEPSAD - @ViewBag.Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Content/Site.css" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</head>
+<body class="body-content">
+
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+        <h5 class="my-0 mr-md-auto font-weight-normal"><img src="~/Imgs/Logo.png" title="AEPSAD Intranet" /></h5>
+        <nav class="my-2 my-md-0 mr-md-3" id="menu"> <!-- Menu Dinámico --> </nav>
+
+        <span class="fa fa-user">&nbsp;</span>&nbsp;@User.Identity.Name
+
+        @*<a class="btn btn-outline-primary" href="#">Sign up</a>*@
+    </div>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+        </ol>
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col col-9">
+
+                @RenderBody()
+
+            </div>
+
+            <div class="col col-3">   
+                @Html.Partial("_Menu", new ViewDataDictionary { { "Modulo", @ViewData["Modulo"] } })
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+<script>
+
+    $(document).ready(function () {
+
+        //Menú
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json",
+            url: "http://localhost:33333/WebApi/Modulos/GetAll",
+            success: function (result) {
+
+                var path = "http://localhost:22222/";
+
+                $.each(result, function (index, value) {
+                    $("#menu").append("<a class='p-2 text-dark' href='" + path + value.Enlace + "'>" + value.Modulo + "</a>");
+                });
+
+            },
+            error: function (req, status, err) {
+                console.log('Something went wrong', req, status, err);
+            }
+        });
+
+    });
+
+</script>

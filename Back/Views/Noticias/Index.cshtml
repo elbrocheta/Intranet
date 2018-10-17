@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Noticias</h2>
+
+<button type="button" class="btn btn-success" onclick="waitingDialog.show('Custom message');setTimeout(function () {waitingDialog.hide();}, 2000);">Show dialog</button>
+
+<button type="button" class="btn btn-success" onclick="waitingDialog.datosGuardados()">datosGuardados</button>
+
+<button type="button" class="btn btn-success" onclick="waitingDialog.datosEliminados()">datosEliminados</button>
+
+<button type="button" class="btn btn-success" onclick="waitingDialog.datosError()">datosError</button>

@@ -1,0 +1,14 @@
+﻿@model  List<Front.Models.Noticias>
+
+@{
+    ViewBag.Title = "Inicio";
+}
+
+<div class="row">
+
+    @foreach (var _noticia in Model)
+    {
+        @Html.Partial("_Noticia", _noticia)
+    }
+
+</div>
