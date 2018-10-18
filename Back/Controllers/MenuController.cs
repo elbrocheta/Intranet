@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web;
@@ -101,8 +102,7 @@ namespace Back.Controllers
                 return RedirectToAction(ConfigHelper.URL_ERROR + "?" + ErrorHelper.ERROR_VARIABLE + "=" + ErrorHelper.ERROR_EXEC_KEY);
             }
         }
-
-
+        
         [HttpGet]
         public ActionResult EditarGruposMenu(String id)
         {
@@ -164,12 +164,12 @@ namespace Back.Controllers
                 HttpResponseMessage _response = _client.PutAsync(WebApiHelper.ENDPOINT_MENU_GRUPOS_UPDATE, content).Result;
 
                 if (_response.IsSuccessStatusCode) {
-                    ViewBag.JavaScriptFunction = string.Format("waitingDialog.datosGuardados();");
+                    ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_save_ok('Los datos han sido actualizados');");
                 }
                 else
                 {
                     ErrorHelper.p_AEPSAD_Log(_response.ReasonPhrase);
-                    ViewBag.JavaScriptFunction = string.Format("waitingDialog.datosError();");
+                    ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_error('"+ _response.ReasonPhrase + "');");
                 }
 
                 return View(model);
@@ -177,7 +177,7 @@ namespace Back.Controllers
             catch (Exception ex)
             {
                 ErrorHelper.p_AEPSAD_Log(ex);
-                ViewBag.JavaScriptFunction = string.Format("waitingDialog.datosError();");
+                ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_error('" + ex.Message + "');");
                 View(model);
             }
 
@@ -213,12 +213,12 @@ namespace Back.Controllers
 
                 if (_response.IsSuccessStatusCode)
                 {
-                    ViewBag.JavaScriptFunction = string.Format("waitingDialog.datosGuardados();");
+                    ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_save_ok('Los datos han sido creados');");
                 }
                 else
                 {
                     ErrorHelper.p_AEPSAD_Log(_response.ReasonPhrase);
-                    ViewBag.JavaScriptFunction = string.Format("waitingDialog.datosError();");
+                    ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_error('" + _response.ReasonPhrase + "');");
                 }
 
                 return View(model);
@@ -226,7 +226,7 @@ namespace Back.Controllers
             catch (Exception ex)
             {
                 ErrorHelper.p_AEPSAD_Log(ex);
-                ViewBag.JavaScriptFunction = string.Format("waitingDialog.datosError();");
+                ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_error('" + ex.Message + "');");
                 View(model);
             }
 
@@ -236,7 +236,7 @@ namespace Back.Controllers
         [HttpGet]
         public ActionResult EliminarGruposMenu(String id)
         {
-            return View();
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
 

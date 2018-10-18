@@ -61,5 +61,13 @@ namespace WebApi.Controllers
 
             return Ok();
         }
+
+        [Route("Delete")]
+        [HttpDelete]
+        public IHttpActionResult Delete(int id) {
+
+
+            return Ok();
+        }
     }
 }

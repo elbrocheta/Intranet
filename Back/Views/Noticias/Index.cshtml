@@ -6,10 +6,18 @@
 
 <h2>Noticias</h2>
 
-<button type="button" class="btn btn-success" onclick="waitingDialog.show('Custom message');setTimeout(function () {waitingDialog.hide();}, 2000);">Show dialog</button>
+<button type="button" class="btn btn-success" onclick="p_AEPSAD_error('todo roto');">p_AEPSAD_error</button>
 
-<button type="button" class="btn btn-success" onclick="waitingDialog.datosGuardados()">datosGuardados</button>
+<button type="button" class="btn btn-success" onclick="p_AEPSAD_save_ok('Los datos se han guardado')">p_AEPSAD_save_ok</button>
 
-<button type="button" class="btn btn-success" onclick="waitingDialog.datosEliminados()">datosEliminados</button>
+<button type="button" class="btn btn-success" onclick="p_AEPSAD_delete_confirm('¿Seguro que quieres borrar esta cosa?','www.as.com')">p_AEPSAD_delete_confirm</button>
+
+
+
+
+<hr />
+<button type="button" class="btn btn-success" onclick="p_AEPSAD_loading('Mensaje 1')">p_AEPSAD_loading 1</button>
+
+<button type="button" class="btn btn-success" onclick="p_AEPSAD_loading('Mensaje 2')">p_AEPSAD_loading 2</button>
 
 <button type="button" class="btn btn-success" onclick="waitingDialog.datosError()">datosError</button>
