@@ -17,7 +17,7 @@ namespace Back.Helpers
             IEnumerable<Modulos> _list_modulos = p_AEPSAD_GetModulos();
 
             if( selected != null)
-                new SelectList(_list_modulos, "Id", "Modulo", selected.ToString());
+                return new SelectList(_list_modulos, "Id", "Modulo", selected.ToString());
 
             return new SelectList(_list_modulos, "Id", "Modulo");
         }

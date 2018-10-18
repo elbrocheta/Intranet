@@ -21,12 +21,14 @@ namespace Back.Controllers
             return View();
         }
 
+       /// <summary>
+       /// Listado sin filtro
+       /// </summary>
+       /// <returns></returns>
         public ActionResult GruposMenu()
         {
             try
             {
-
-
                 List<vBack_GruposMenuList> _list = new List<vBack_GruposMenuList>();
                 HttpResponseMessage _response = WebApiHelper.p_AEPSAD_Request(WebApiHelper.ENDPOINT_MENU_GRUPOS_GETALL);
 
@@ -43,6 +45,51 @@ namespace Back.Controllers
 
                 if (_list == null)
                     return View(new List<vBack_GruposMenuList>());
+
+                ViewBag.Opciones = DropDownListHelper.p_AEPSAD_Modulos();
+
+                return View(_list);
+            }
+
+            catch (Exception ex)
+            {
+                ErrorHelper.p_AEPSAD_Log(ex);
+
+                return RedirectToAction(ConfigHelper.URL_ERROR + "?" + ErrorHelper.ERROR_VARIABLE + "=" + ErrorHelper.ERROR_EXEC_KEY);
+            }
+        }
+
+        /// <summary>
+        /// Listado con filtro
+        /// </summary>
+        /// <param name="filterByModulo"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GruposMenu(int filterByModulo = -1)
+        {
+            try
+            {
+                List<vBack_GruposMenuList> _list = new List<vBack_GruposMenuList>();
+                HttpResponseMessage _response = WebApiHelper.p_AEPSAD_Request(WebApiHelper.ENDPOINT_MENU_GRUPOS_GETALL);
+
+                if (_response.IsSuccessStatusCode)
+                {
+                    var _json = _response.Content.ReadAsStringAsync().Result;
+
+                    _list = JsonConvert.DeserializeObject<List<vBack_GruposMenuList>>(_json);
+                }
+                else
+                {
+                    ErrorHelper.p_AEPSAD_Log(_response.StatusCode.ToString());
+                }
+
+                if (_list == null)
+                    return View(new List<vBack_GruposMenuList>());
+
+                ViewBag.Opciones = DropDownListHelper.p_AEPSAD_Modulos(filterByModulo);
+
+                if (filterByModulo > 0)
+                    _list = _list.Where(x => x.ModuloId == filterByModulo).ToList();
 
                 return View(_list);
             }
@@ -136,8 +183,7 @@ namespace Back.Controllers
 
             return View(model);
         }
-           
-
+         
         public ActionResult CrearGruposMenu()
         {
             MenuGrupo _m = new MenuGrupo();
@@ -186,8 +232,7 @@ namespace Back.Controllers
 
             return View(model);
         }
-
-
+        
         [HttpGet]
         public ActionResult EliminarGruposMenu(String id)
         {
