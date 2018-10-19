@@ -95,8 +95,11 @@
 
     function p_AEPSAD_eliminar(value) {
 
-        var myUrl = '@Url.Action("EliminarGruposMenu", "Menu", new { id = "-1" })';
-        myUrl = myUrl.replace("-1", value); 
+        @*var myUrl = '@Url.Action("EliminarGruposMenu", "Menu", new { id = "-1" })';
+        myUrl = myUrl.replace("-1", value);*@ 
+
+        var myUrl = "/Menu/EliminarGruposMenu?id=" + value;
+
 
         p_AEPSAD_delete_confirm(myUrl, "¿Estás seguro que quieres borrar este elemento?");
 

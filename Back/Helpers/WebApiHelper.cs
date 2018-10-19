@@ -36,6 +36,7 @@ namespace Back.Helpers
         public static readonly String ENDPOINT_MENU_GRUPOS_GETONE = URL_WEBAPI + URL_WEBAPI_MEN_GRUPOS + "GetOne?id=";
         public static readonly String ENDPOINT_MENU_GRUPOS_UPDATE = URL_WEBAPI + URL_WEBAPI_MEN_GRUPOS + "Update";
         public static readonly String ENDPOINT_MENU_GRUPOS_CREATE = URL_WEBAPI + URL_WEBAPI_MEN_GRUPOS + "Create";
+        public static readonly String ENDPOINT_MENU_GRUPOS_DELETE = URL_WEBAPI + URL_WEBAPI_MEN_GRUPOS + "Delete?id=";
 
         #endregion
 

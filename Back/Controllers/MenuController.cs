@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -234,9 +235,33 @@ namespace Back.Controllers
         }
         
         [HttpGet]
-        public ActionResult EliminarGruposMenu(String id)
+        public async Task<ActionResult> EliminarGruposMenu(String id)
         {
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+
+            try
+            {
+                //HttpResponseMessage _response = WebApiHelper.p_AEPSAD_Request(WebApiHelper.ENDPOINT_MENU_GRUPOS_DELETE + id);
+                HttpClient _client = WebApiHelper.p_APESAD_HttpClient(SessionHelper.p_AEPSAD_get_usuario().Token);
+
+                HttpResponseMessage _response = await _client.DeleteAsync(WebApiHelper.ENDPOINT_MENU_GRUPOS_DELETE + id);
+
+                if (_response.IsSuccessStatusCode)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.OK);
+                }
+                else
+                {
+                    ErrorHelper.p_AEPSAD_Log(_response.StatusCode.ToString());
+
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest,"Error en el WebApi" );
+                }
+            }
+            catch (Exception ex) {
+
+                ErrorHelper.p_AEPSAD_Log(ex);
+
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest,ex.Message);
+            }
         }
 
 

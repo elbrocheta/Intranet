@@ -2,16 +2,16 @@
     $.alert({
         icon: 'fa fa-spinner fa-spin',
         title: 'Intranet - AEPSAD',
-        content: vMensaje        
+        content: vMensaje
     });
 }
 
 function p_AEPSAD_save_ok(vMensaje) {
-    
+
     $.confirm({
         icon: 'fas fa-check',
         title: 'Intranet - AEPSAD',
-        content: vMensaje ,
+        content: vMensaje,
         type: 'blue',
         typeAnimated: true,
         buttons: {
@@ -43,8 +43,10 @@ function p_AEPSAD_error(vMensaje) {
     });
 }
 
-function p_AEPSAD_delete_confirm(vURL,vMensaje) {
-    
+function p_AEPSAD_delete_confirm(vUrlDelete, vMensaje) {
+
+    console.log("p_AEPSAD_delete_confirm");
+
     $.confirm({
         icon: 'fas fa-check',
         title: 'Intranet - AEPSAD',
@@ -56,14 +58,31 @@ function p_AEPSAD_delete_confirm(vURL,vMensaje) {
                 text: 'Borrar',
                 btnClass: 'btn-red',
                 action: function () {
-                    location.href = vURL;
+
+                    var fullUrl = window.location.origin + vUrlDelete;
+
+                    $.ajax({
+                        url: fullUrl,
+                        datatype: "text",
+                        type: "get",
+                        contentType: "application/json",
+                        async: true,
+                        success: function (data) {
+                            p_AEPSAD_save_ok("El elemento se ha eliminado correctamente");    
+                            window.location.href = location.href;
+                        },
+                        error: function (data) {
+                            p_AEPSAD_error(data);
+                        }
+                    });
+
                 }
             },
             cancel: {
                 text: 'Cancelar',
                 btnClass: 'btn-blue',
                 action: function () {
-                    
+
                 }
             }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
@@ -66,6 +67,21 @@ namespace WebApi.Controllers
         [HttpDelete]
         public IHttpActionResult Delete(int id) {
 
+            try
+            {
+                List<MenuGrupo> _item = db.MenuGrupo.Where(x => x.Id == id).ToList();
+
+                if (_item == null || _item.Count <= 0)
+                    return NotFound();
+
+                db.MenuGrupo.Remove(_item[0]);
+                db.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return Ok();
         }
