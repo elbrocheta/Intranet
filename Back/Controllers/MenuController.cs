@@ -9,7 +9,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Back.Controllers
@@ -20,13 +19,83 @@ namespace Back.Controllers
         // GET: Menu
         public ActionResult MenuItems()
         {
-            return View();
+            try
+            {
+                List<vBack_Menu> _list = new List<vBack_Menu>();
+                HttpResponseMessage _response = WebApiHelper.p_AEPSAD_Request(WebApiHelper.ENDPOINT_MENU_GETALL);
+
+                if (_response.IsSuccessStatusCode)
+                {
+                    var _json = _response.Content.ReadAsStringAsync().Result;
+
+                    _list = JsonConvert.DeserializeObject<List<vBack_Menu>>(_json);
+                }
+                else
+                {
+                    ErrorHelper.p_AEPSAD_Log(_response.StatusCode.ToString());
+                }
+
+                if (_list == null)
+                    return View(new List<vBack_Menu>());
+
+                ViewBag.Opciones = DropDownListHelper.p_AEPSAD_MenuGrupos();
+
+                return View(_list);
+            }
+
+            catch (Exception ex)
+            {
+                ErrorHelper.p_AEPSAD_Log(ex);
+
+                return RedirectToAction(ConfigHelper.URL_ERROR + "?" + ErrorHelper.ERROR_VARIABLE + "=" + ErrorHelper.ERROR_EXEC_KEY);
+            }
         }
 
-       /// <summary>
-       /// Listado sin filtro
-       /// </summary>
-       /// <returns></returns>
+        [HttpGet]
+        public ActionResult MenuItems(int filterByGroup = -1)
+        {
+            try
+            {
+                List<vBack_Menu> _list = new List<vBack_Menu>();
+                HttpResponseMessage _response = WebApiHelper.p_AEPSAD_Request(WebApiHelper.ENDPOINT_MENU_GETALL);
+
+                if (_response.IsSuccessStatusCode)
+                {
+                    var _json = _response.Content.ReadAsStringAsync().Result;
+
+                    _list = JsonConvert.DeserializeObject<List<vBack_Menu>>(_json);
+                }
+                else
+                {
+                    ErrorHelper.p_AEPSAD_Log(_response.StatusCode.ToString());
+                }
+
+                if (_list == null)
+                    return View(new List<vBack_Menu>());
+
+                ViewBag.Opciones = DropDownListHelper.p_AEPSAD_MenuGrupos(filterByGroup);
+
+                if (filterByGroup > 0)
+                    _list = _list.Where(x => x.MenuGrupoId == filterByGroup).ToList();
+
+                return View(_list);
+            }
+
+            catch (Exception ex)
+            {
+                ErrorHelper.p_AEPSAD_Log(ex);
+
+                return RedirectToAction(ConfigHelper.URL_ERROR + "?" + ErrorHelper.ERROR_VARIABLE + "=" + ErrorHelper.ERROR_EXEC_KEY);
+            }
+        }
+
+
+        #region Grupos Menu
+
+        /// <summary>
+        /// Listado sin filtro
+        /// </summary>
+        /// <returns></returns>
         public ActionResult GruposMenu()
         {
             try
@@ -264,9 +333,7 @@ namespace Back.Controllers
             }
         }
 
-
-
-
+        #endregion
     }
 
 }

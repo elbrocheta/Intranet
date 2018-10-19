@@ -1,41 +1,116 @@
-﻿
+﻿@model  List<Back.Models.vBack_Menu>
+
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Items de menú";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Menu</h2>
+<h2>Menu Items</h2>
 <hr />
 
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>twitter</td>
-        </tr>
-    </tbody>
-</table>
+<div class="row align-right">
+    <fieldset>
+        <legend>Filtro</legend>
+        <form class="form-inline">
+            @Html.Label("Grupo Menú", new { @class = "text-info" })&nbsp;
+            @Html.DropDownList("Grupo", (IEnumerable<SelectListItem>)ViewBag.Opciones, "Selecciona un grupo", htmlAttributes: new { @class = "form-control" })&nbsp;
+            <input type="button" class="btn btn-primary" value="Filtrar" id="btnFiltro">
+        </form>
+    </fieldset>
+</div>
 
 
+<div class="row align-right">
+    <div class="col text-right">
+        <button type="button" class="btn btn-primary" id="btnNuevo"><i class="fa fa-plus"></i> Nuevo</button>
+    </div>
+</div>
+
+<div class="sepatator_10"></div>
+
+<div class="row">
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Grupo Menú</th>
+                <th scope="col">Texto</th>
+                <th scope="col">Enlace</th>
+                <th scope="col">Icono</th>
+                <th scope="col">Nueva Ventana</th>
+                <th scope="col">Orden</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var _item in Model)
+            {
+            <tr>
+                <th scope="row">@_item.Id</th>
+                <td>@_item.MenuGrupo</td>
+                <td>@_item.Texto</td>
+                <td>@_item.Enlace</td>
+                <td>@_item.Icono</td>
+                <td>@_item.NuevaVentana</td>
+                <td>@_item.Orden</td>
+
+                <td>
+                    <button type="button" id="btnEditar_+ @_item.Id" class="btn btn-primary" onclick="p_AEPSAD_editar(@_item.Id)"><i class="fa fa-pen"></i> Editar</button>
+                    <button type="button" id="btnEliminar_+ @_item.Id" class="btn btn-danger" onclick="p_AEPSAD_eliminar(@_item.Id)"><i class="fa fa-trash"></i> Eliminar</button>
+                </td>
+            </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#btnNuevo").click(function () {
+            p_AEPSAD_redirect("@Url.Action("CrearGruposMenu", "Menu")");
+        });
+
+
+        $("#btnFiltro").click(function () {
+            p_AEPSAD_filtrar();
+        });
+
+    });
+
+    function p_AEPSAD_filtrar() {
+
+        var myUrl = '@Url.Action("MenuItems", "Menu",new { filterByGroup = "filterByGrupoValue"})';
+        myUrl = myUrl.replace("filterByGrupoValue", $("#Grupo").val());
+
+        p_AEPSAD_redirect(myUrl);
+    }
+
+    function p_AEPSAD_editar(value) {
+
+        var myUrl = '@Url.Action("EditarGruposMenu", "Menu", new { id = "-1" })';
+        myUrl = myUrl.replace("-1", value);
+
+        p_AEPSAD_redirect(myUrl);
+    }
+
+
+    function p_AEPSAD_eliminar(value) {
+
+        var myUrl = "/Menu/EliminarGruposMenu?id=" + value;
+
+        p_AEPSAD_delete_confirm(myUrl, "¿Estás seguro que quieres borrar este elemento?");
+    }
+
+    function p_AEPSAD_redirect(url) {
+        waitingDialog.show('Cargando contenido');
+        window.location.href = url;
+    }
+
+</script>

@@ -26,8 +26,7 @@ namespace WebApi.Controllers
         {
             return db.MenuGrupo.Where(x => x.Id == id);
         }
-
-
+        
         [Route("Update")]
         [HttpPut]
         public IHttpActionResult Update(MenuGrupo model)

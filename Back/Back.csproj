@@ -171,6 +171,7 @@
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\UsuariosGrupos.cs" />
     <Compile Include="Models\vBack_GruposMenuList.cs" />
+    <Compile Include="Models\vBack_Menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

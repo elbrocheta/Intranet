@@ -13,9 +13,9 @@ namespace WebApi.Controllers
                
         [Route("GetAll")]
         [HttpGet]
-        public IQueryable<Menu> GetAll()
+        public IQueryable<vBack_Menu> GetAll()
         {
-            return db.Menu.OrderBy(x => x.Orden);
+            return db.vBack_Menu.OrderBy(x => x.Orden);
         }
 
         [AllowAnonymous]

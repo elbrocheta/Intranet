@@ -200,6 +200,9 @@
     <Compile Include="Models\vBack_GruposMenuList.cs">
       <DependentUpon>ModelIntranet.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\vBack_Menu.cs">
+      <DependentUpon>ModelIntranet.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\vFront_Menu.cs">
       <DependentUpon>ModelIntranet.tt</DependentUpon>
     </Compile>
