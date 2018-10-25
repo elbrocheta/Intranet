@@ -2,9 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Back.Helpers
@@ -12,11 +10,12 @@ namespace Back.Helpers
     public class DropDownListHelper
     {
 
-        public static SelectList p_AEPSAD_Modulos( int? selected = null) {
+        public static SelectList p_AEPSAD_Modulos(int? selected = null)
+        {
 
             IEnumerable<Modulos> _list_modulos = p_AEPSAD_GetModulos();
 
-            if( selected != null)
+            if (selected != null)
                 return new SelectList(_list_modulos, "Id", "Modulo", selected.ToString());
 
             return new SelectList(_list_modulos, "Id", "Modulo");
@@ -33,11 +32,20 @@ namespace Back.Helpers
             return new SelectList(_list_modulos, "Id", "Nombre");
         }
 
+        public static SelectList p_AEPSAD_FontAwesomeIconList()
+        {
+            List<SelectListItem> _list = new List<SelectListItem>
+            {                
+                new SelectListItem() { Text = "&#xf02d; book solid", Value = "fas fa-book" },
+                new SelectListItem() { Text = "&#xf379; Bitcoin brands", Value = "fab fa-bitcoin" },
+                new SelectListItem() { Text = "&#xf0f3; bell regular", Value = "far fa-bell" }
+            };
+
+            return new SelectList(_list);
+        }
 
 
-
-
-        private static IEnumerable<Modulos> p_AEPSAD_GetModulos()
+        public static IEnumerable<Modulos> p_AEPSAD_GetModulos()
         {
             try
             {
@@ -69,7 +77,7 @@ namespace Back.Helpers
             }
         }
 
-        private static IEnumerable<MenuGrupo> p_AEPSAD_GetMenuGrupos()
+        public static IEnumerable<MenuGrupo> p_AEPSAD_GetMenuGrupos()
         {
             try
             {

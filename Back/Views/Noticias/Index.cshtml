@@ -1,4 +1,5 @@
-﻿
+﻿@model Back.Models.Menu
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,10 +8,29 @@
 <h2>Noticias</h2>
 
 
+@using (Html.BeginForm("SubirMenuItems", "Menu", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+    @*@Html.TextBoxFor(model => model.IconoFile, "", new { type = "file" }))*@
+
+    @Html.TextBoxFor(model => model.IconoFile,"", new { type = "file" })
+
+
+
+
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-default" value="Guardar">
+    </div>
+
+}
+
+
+<hr />
 <button type="button" class="btn btn-success" onclick="waitingDialog.show('esto es una prueba')">Cargando</button>
 
 <button type="button" class="btn btn-success" onclick="waitingDialog.show()">Cargando 2</button>
-
 
 
 
@@ -21,7 +41,7 @@
 
 <div class="modal" id="loadingModal">
     <div class="modal-dialog">
-        <div class="modal-content">         
+        <div class="modal-content">
 
             <!-- Modal body -->
             <div class="modal-body">

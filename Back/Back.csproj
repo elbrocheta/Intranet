@@ -166,6 +166,7 @@
     <Compile Include="Helpers\ErrorHelper.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Helpers\WebApiHelper.cs" />
+    <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MenuGrupo.cs" />
     <Compile Include="Models\Modulos.cs" />
     <Compile Include="Models\Usuario.cs" />
@@ -185,6 +186,31 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Imgs\icons\arrow.png" />
+    <Content Include="Imgs\icons\book.png" />
+    <Content Include="Imgs\icons\cabinet.png" />
+    <Content Include="Imgs\icons\calendar.png" />
+    <Content Include="Imgs\icons\client.png" />
+    <Content Include="Imgs\icons\database.png" />
+    <Content Include="Imgs\icons\download.png" />
+    <Content Include="Imgs\icons\facebook.png" />
+    <Content Include="Imgs\icons\graph.png" />
+    <Content Include="Imgs\icons\home.png" />
+    <Content Include="Imgs\icons\lock.png" />
+    <Content Include="Imgs\icons\mail.png" />
+    <Content Include="Imgs\icons\pdf.png" />
+    <Content Include="Imgs\icons\people.png" />
+    <Content Include="Imgs\icons\phone.png" />
+    <Content Include="Imgs\icons\piechart.png" />
+    <Content Include="Imgs\icons\rss.png" />
+    <Content Include="Imgs\icons\search.png" />
+    <Content Include="Imgs\icons\shopping-bag.png" />
+    <Content Include="Imgs\icons\survey.png" />
+    <Content Include="Imgs\icons\tag.png" />
+    <Content Include="Imgs\icons\twitter.png" />
+    <Content Include="Imgs\icons\user.png" />
+    <Content Include="Imgs\icons\wallet.png" />
+    <Content Include="Imgs\icons\web.png" />
     <Content Include="Imgs\Logo.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -200,6 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\Icons\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="log4net.config">
@@ -214,7 +241,8 @@
     <Content Include="Views\Menu\GruposMenu.cshtml" />
     <Content Include="Views\Menu\EditarGruposMenu.cshtml" />
     <Content Include="Views\Menu\CrearGruposMenu.cshtml" />
-    <Content Include="Views\Menu\EliminarGruposMenu.cshtml" />
+    <Content Include="Views\Menu\EditarMenuItems.cshtml" />
+    <Content Include="Views\Menu\CrearMenuItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IntranetData\IntranetData.csproj">

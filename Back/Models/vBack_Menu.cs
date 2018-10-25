@@ -9,7 +9,8 @@
         public string Texto { get; set; }
         public string Enlace { get; set; }
         public string Icono { get; set; }
-        public byte NuevaVentana { get; set; }
+        public bool NuevaVentana { get; set; }
         public int Orden { get; set; }
+        public string Modulo { get; set; }
     }
 }

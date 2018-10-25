@@ -83,6 +83,7 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vBack_Menu' no tiene
             <PropertyRef Name="Icono" />
             <PropertyRef Name="NuevaVentana" />
             <PropertyRef Name="Orden" />
+            <PropertyRef Name="Modulo" />
           </Key>
           <Property Name="MenuGrupo" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ModuloId" Type="int" Nullable="false" />
@@ -93,6 +94,7 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vBack_Menu' no tiene
           <Property Name="Icono" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="NuevaVentana" Type="tinyint" Nullable="false" />
           <Property Name="Orden" Type="int" Nullable="false" />
+          <Property Name="Modulo" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -179,7 +181,8 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tien
     [vBack_Menu].[Enlace] AS [Enlace], 
     [vBack_Menu].[Icono] AS [Icono], 
     [vBack_Menu].[NuevaVentana] AS [NuevaVentana], 
-    [vBack_Menu].[Orden] AS [Orden]
+    [vBack_Menu].[Orden] AS [Orden], 
+    [vBack_Menu].[Modulo] AS [Modulo]
     FROM [dbo].[vBack_Menu] AS [vBack_Menu]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vFront_Menu" EntityType="Self.vFront_Menu" store:Type="Views" store:Schema="dbo">
@@ -366,6 +369,7 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tien
             <PropertyRef Name="Icono" />
             <PropertyRef Name="NuevaVentana" />
             <PropertyRef Name="Orden" />
+            <PropertyRef Name="Modulo" />
           </Key>
           <Property Name="MenuGrupo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ModuloId" Type="Int32" Nullable="false" />
@@ -376,6 +380,7 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tien
           <Property Name="Icono" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="NuevaVentana" Type="Byte" Nullable="false" />
           <Property Name="Orden" Type="Int32" Nullable="false" />
+          <Property Name="Modulo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -466,6 +471,7 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tien
           <EntitySetMapping Name="vBack_Menu">
             <EntityTypeMapping TypeName="PruebasIntranet2019Model.vBack_Menu">
               <MappingFragment StoreEntitySet="vBack_Menu">
+                <ScalarProperty Name="Modulo" ColumnName="Modulo" />
                 <ScalarProperty Name="Orden" ColumnName="Orden" />
                 <ScalarProperty Name="NuevaVentana" ColumnName="NuevaVentana" />
                 <ScalarProperty Name="Icono" ColumnName="Icono" />

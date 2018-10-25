@@ -1,5 +1,4 @@
-﻿@model  List<Back.Models.vBack_Menu>
-
+﻿@model List<Back.Models.vBack_Menu>
 
 @{
     ViewBag.Title = "Items de menú";
@@ -8,17 +7,6 @@
 
 <h2>Menu Items</h2>
 <hr />
-
-<div class="row align-right">
-    <fieldset>
-        <legend>Filtro</legend>
-        <form class="form-inline">
-            @Html.Label("Grupo Menú", new { @class = "text-info" })&nbsp;
-            @Html.DropDownList("Grupo", (IEnumerable<SelectListItem>)ViewBag.Opciones, "Selecciona un grupo", htmlAttributes: new { @class = "form-control" })&nbsp;
-            <input type="button" class="btn btn-primary" value="Filtrar" id="btnFiltro">
-        </form>
-    </fieldset>
-</div>
 
 
 <div class="row align-right">
@@ -29,72 +17,85 @@
 
 <div class="sepatator_10"></div>
 
-<div class="row">
+@{
+    var _is_first = true;
+    var css_collapse = "collapsed";
+    var css_show = "show";
+}
 
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Grupo Menú</th>
-                <th scope="col">Texto</th>
-                <th scope="col">Enlace</th>
-                <th scope="col">Icono</th>
-                <th scope="col">Nueva Ventana</th>
-                <th scope="col">Orden</th>
-            </tr>
-        </thead>
-        <tbody>
 
-            @foreach (var _item in Model)
-            {
-            <tr>
-                <th scope="row">@_item.Id</th>
-                <td>@_item.MenuGrupo</td>
-                <td>@_item.Texto</td>
-                <td>@_item.Enlace</td>
-                <td>@_item.Icono</td>
-                <td>@_item.NuevaVentana</td>
-                <td>@_item.Orden</td>
+<div id="accordion">
 
-                <td>
-                    <button type="button" id="btnEditar_+ @_item.Id" class="btn btn-primary" onclick="p_AEPSAD_editar(@_item.Id)"><i class="fa fa-pen"></i> Editar</button>
-                    <button type="button" id="btnEliminar_+ @_item.Id" class="btn btn-danger" onclick="p_AEPSAD_eliminar(@_item.Id)"><i class="fa fa-trash"></i> Eliminar</button>
-                </td>
-            </tr>
-            }
+    @foreach (var _mo in Model.Select(x => new { x.ModuloId, x.Modulo }).Distinct())
+    {
 
-        </tbody>
-    </table>
+        <div class="card">
+            <div class="card-header" id="heading@_mo.ModuloId">
+                <h5 class="mb-0">
+                    <button class="btn btn-link @(!_is_first ? css_collapse : null)" data-toggle="collapse" data-target="#collapse@_mo.ModuloId" aria-expanded="true" aria-controls="collapse@_mo.ModuloId">
+                        @_mo.Modulo
+                    </button>
+                </h5>
+            </div>
 
+            <div id="collapse@_mo.ModuloId" class="collapse @(_is_first ? css_show : null)" aria-labelledby="heading@_mo.ModuloId" data-parent="#accordion">
+
+                @foreach (var _mg in Model.Where(x => x.ModuloId == _mo.ModuloId).Select(x => new { x.MenuGrupoId, x.MenuGrupo }).Distinct())
+                {
+
+                    <div class="card-body">
+                        <h6 class="card-title">@_mg.MenuGrupo</h6>
+                        <p class="card-text">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Icono</th>
+                                        <th scope="col">Texto</th>
+                                        <th scope="col">Nueva ventana</th>  
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var _item in Model.Where(x => x.ModuloId == _mo.ModuloId && x.MenuGrupoId == _mg.MenuGrupoId).Select(x => new { x.Id, x.Icono, x.Texto, x.NuevaVentana }).Distinct())
+                                    {
+                                    <tr>
+                                        <td>@_item.Id</td>
+                                        <td><i class="@_item.Icono"></i></td>
+                                        <td>@_item.Texto</td>
+                                        <td>@(_item.NuevaVentana == true ? "Sí" : "No")</td>
+                                        <td>
+                                            <button type="button" id="btnEditar_+ @_item.Id" class="btn btn-primary" onclick="p_AEPSAD_editar(@_item.Id)" title="Editar"><i class="fa fa-pen"></i></button>
+                                            <button type="button" id="btnEliminar_+ @_item.Id" class="btn btn-danger" onclick="p_AEPSAD_eliminar(@_item.Id)" title="Eliminar"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </p>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+
+        _is_first = false;
+
+    }
 </div>
 
 
 <script>
 
     $(document).ready(function () {
-
         $("#btnNuevo").click(function () {
-            p_AEPSAD_redirect("@Url.Action("CrearGruposMenu", "Menu")");
+            p_AEPSAD_redirect("@Url.Action("CrearMenuItems", "Menu")");
         });
-
-
-        $("#btnFiltro").click(function () {
-            p_AEPSAD_filtrar();
-        });
-
     });
-
-    function p_AEPSAD_filtrar() {
-
-        var myUrl = '@Url.Action("MenuItems", "Menu",new { filterByGroup = "filterByGrupoValue"})';
-        myUrl = myUrl.replace("filterByGrupoValue", $("#Grupo").val());
-
-        p_AEPSAD_redirect(myUrl);
-    }
 
     function p_AEPSAD_editar(value) {
 
-        var myUrl = '@Url.Action("EditarGruposMenu", "Menu", new { id = "-1" })';
+        var myUrl = '@Url.Action("EditarMenuItems", "Menu", new { id = "-1" })';
         myUrl = myUrl.replace("-1", value);
 
         p_AEPSAD_redirect(myUrl);
@@ -103,7 +104,7 @@
 
     function p_AEPSAD_eliminar(value) {
 
-        var myUrl = "/Menu/EliminarGruposMenu?id=" + value;
+        var myUrl = "/Menu/EliminarMenuItems?id=" + value;
 
         p_AEPSAD_delete_confirm(myUrl, "¿Estás seguro que quieres borrar este elemento?");
     }

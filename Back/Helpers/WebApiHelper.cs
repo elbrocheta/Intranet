@@ -29,6 +29,9 @@ namespace Back.Helpers
 
         public static readonly String ENDPOINT_MENU_GETALL = URL_WEBAPI + URL_WEBAPI_MENU + "GetAll";
         public static readonly String ENDPOINT_MENU_GETONE = URL_WEBAPI + URL_WEBAPI_MENU + "GetOne?id=";
+        public static readonly String ENDPOINT_MENU_UPDATE = URL_WEBAPI + URL_WEBAPI_MENU + "Update";
+        public static readonly String ENDPOINT_MENU_CREATE = URL_WEBAPI + URL_WEBAPI_MENU + "Create";
+        public static readonly String ENDPOINT_MENU_DELETE = URL_WEBAPI + URL_WEBAPI_MENU + "Delete?id=";
 
         public static readonly String ENDPOINT_MODULOS_GETALL = URL_WEBAPI + URL_WEBAPI_MODULOS + "GetAll";
 

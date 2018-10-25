@@ -4,11 +4,14 @@ using Back.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Back.Controllers
@@ -16,7 +19,7 @@ namespace Back.Controllers
     [AuthorizationFilter]
     public class MenuController : Controller
     {
-        // GET: Menu
+        //GET: Menu
         public ActionResult MenuItems()
         {
             try
@@ -38,7 +41,7 @@ namespace Back.Controllers
                 if (_list == null)
                     return View(new List<vBack_Menu>());
 
-                ViewBag.Opciones = DropDownListHelper.p_AEPSAD_MenuGrupos();
+                _list = _list.OrderBy(x => x.ModuloId).OrderBy(x => x.MenuGrupoId).ToList();
 
                 return View(_list);
             }
@@ -51,34 +54,91 @@ namespace Back.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult MenuItems(int filterByGroup = -1)
+        public ActionResult CrearMenuItems()
         {
+            Menu _m = new Menu
+            {
+                GruposMenu = DropDownListHelper.p_AEPSAD_MenuGrupos()
+            };
+
+
+            return View(_m);
+        }
+
+        [HttpPost]
+        public ActionResult CrearMenuItems(Menu model, HttpPostedFileBase IconoFile)
+        {
+            model.GruposMenu = DropDownListHelper.p_AEPSAD_MenuGrupos(model.MenuGrupoId);
+                      
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             try
             {
-                List<vBack_Menu> _list = new List<vBack_Menu>();
-                HttpResponseMessage _response = WebApiHelper.p_AEPSAD_Request(WebApiHelper.ENDPOINT_MENU_GETALL);
+
+                HttpClient _client = WebApiHelper.p_APESAD_HttpClient(SessionHelper.p_AEPSAD_get_usuario().Token);               
+
+
+                var _json = JsonConvert.SerializeObject(model);
+                var _content = new StringContent(_json.ToString(), Encoding.UTF8, "application/json");
+
+                HttpResponseMessage _response = _client.PostAsync(WebApiHelper.ENDPOINT_MENU_CREATE, _content).Result;
+
+                if (_response.IsSuccessStatusCode)
+                {
+                    ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_save_ok('Los datos han sido creados');");
+                }
+                else
+                {
+                    ErrorHelper.p_AEPSAD_Log(_response.ReasonPhrase);
+                    ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_error('" + _response.ReasonPhrase + "');");
+                }
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ErrorHelper.p_AEPSAD_Log(ex);
+                ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_error('" + ex.Message + "');");
+                return View(model);
+            }
+        }
+
+
+        [HttpGet]
+        public ActionResult EditarMenuItems(String id)
+        {
+            Menu _m = new Menu();
+
+            try
+            {
+                List<Menu> _list = new List<Menu>();
+                HttpResponseMessage _response = WebApiHelper.p_AEPSAD_Request(WebApiHelper.ENDPOINT_MENU_GETONE + id);
 
                 if (_response.IsSuccessStatusCode)
                 {
                     var _json = _response.Content.ReadAsStringAsync().Result;
 
-                    _list = JsonConvert.DeserializeObject<List<vBack_Menu>>(_json);
+                    _list = JsonConvert.DeserializeObject<List<Menu>>(_json);
+
+                    if (_list.Count > 0)
+                    {
+                        _m = _list[0];
+                        _m.GruposMenu = DropDownListHelper.p_AEPSAD_MenuGrupos(_m.MenuGrupoId);
+                    }
                 }
                 else
                 {
                     ErrorHelper.p_AEPSAD_Log(_response.StatusCode.ToString());
                 }
 
+                ViewBag.FontAwesome = DropDownListHelper.p_AEPSAD_FontAwesomeIconList();
+
                 if (_list == null)
-                    return View(new List<vBack_Menu>());
+                    return View(_m);
 
-                ViewBag.Opciones = DropDownListHelper.p_AEPSAD_MenuGrupos(filterByGroup);
-
-                if (filterByGroup > 0)
-                    _list = _list.Where(x => x.MenuGrupoId == filterByGroup).ToList();
-
-                return View(_list);
+                return View(_m);
             }
 
             catch (Exception ex)
@@ -89,6 +149,81 @@ namespace Back.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult EditarMenuItems(Menu model, HttpPostedFileBase IconoFile)
+        {
+            model.GruposMenu = DropDownListHelper.p_AEPSAD_MenuGrupos(model.MenuGrupoId);
+
+            var validImageTypes = new string[]
+            {
+                "image/gif",
+                "image/jpeg",
+                "image/pjpeg",
+                "image/png"
+            };
+
+            if (IconoFile == null || IconoFile.ContentLength == 0)
+            {
+                ModelState.AddModelError("IconoFile", "This field is required");
+            }
+            else if (!validImageTypes.Contains(IconoFile.ContentType))
+            {
+                ModelState.AddModelError("IconoFile", "Please choose either a GIF, JPG or PNG image.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                //Use Namespace called :  System.IO  
+                string FileName = Path.GetFileNameWithoutExtension(IconoFile.FileName);
+
+                //To Get File Extension  
+                string FileExtension = Path.GetExtension(IconoFile.FileName);
+
+                //Add Current Date To Attached File Name  
+                FileName = "MenuIcon_" + model.Id.ToString() + FileExtension;
+
+                //Get Upload path from Web.Config file AppSettings.  
+                string UploadPath = Path.Combine(Server.MapPath("~/Uploads/Icons"), FileName);
+
+                //Its Create complete path to store in server.  
+                model.Icono = FileName;
+
+                //To copy and save file into server.  
+                IconoFile.SaveAs(UploadPath);
+
+
+                HttpClient _client = WebApiHelper.p_APESAD_HttpClient(SessionHelper.p_AEPSAD_get_usuario().Token);
+
+
+                var _json = JsonConvert.SerializeObject(model);
+                var _content = new StringContent(_json.ToString(), Encoding.UTF8, "application/json");
+
+                HttpResponseMessage _response = _client.PutAsync(WebApiHelper.ENDPOINT_MENU_UPDATE, _content).Result;
+
+                if (_response.IsSuccessStatusCode)
+                {
+                    ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_save_ok('Los datos han sido actualizados');");
+                }
+                else
+                {
+                    ErrorHelper.p_AEPSAD_Log(_response.ReasonPhrase);
+                    ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_error('" + _response.ReasonPhrase + "');");
+                }
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ErrorHelper.p_AEPSAD_Log(ex);
+                ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_error('" + ex.Message + "');");
+                return View(model);
+            }
+        }
 
         #region Grupos Menu
 
@@ -172,7 +307,7 @@ namespace Back.Controllers
                 return RedirectToAction(ConfigHelper.URL_ERROR + "?" + ErrorHelper.ERROR_VARIABLE + "=" + ErrorHelper.ERROR_EXEC_KEY);
             }
         }
-        
+
         [HttpGet]
         public ActionResult EditarGruposMenu(String id)
         {
@@ -233,13 +368,14 @@ namespace Back.Controllers
 
                 HttpResponseMessage _response = _client.PutAsync(WebApiHelper.ENDPOINT_MENU_GRUPOS_UPDATE, content).Result;
 
-                if (_response.IsSuccessStatusCode) {
+                if (_response.IsSuccessStatusCode)
+                {
                     ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_save_ok('Los datos han sido actualizados');");
                 }
                 else
                 {
                     ErrorHelper.p_AEPSAD_Log(_response.ReasonPhrase);
-                    ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_error('"+ _response.ReasonPhrase + "');");
+                    ViewBag.JavaScriptFunction = string.Format("p_AEPSAD_error('" + _response.ReasonPhrase + "');");
                 }
 
                 return View(model);
@@ -253,11 +389,13 @@ namespace Back.Controllers
 
             return View(model);
         }
-         
+
         public ActionResult CrearGruposMenu()
         {
-            MenuGrupo _m = new MenuGrupo();
-            _m.Modulos = DropDownListHelper.p_AEPSAD_Modulos();
+            MenuGrupo _m = new MenuGrupo
+            {
+                Modulos = DropDownListHelper.p_AEPSAD_Modulos()
+            };
 
             return View(_m);
         }
@@ -302,7 +440,7 @@ namespace Back.Controllers
 
             return View(model);
         }
-        
+
         [HttpGet]
         public async Task<ActionResult> EliminarGruposMenu(String id)
         {
@@ -322,14 +460,15 @@ namespace Back.Controllers
                 {
                     ErrorHelper.p_AEPSAD_Log(_response.StatusCode.ToString());
 
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest,"Error en el WebApi" );
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Error en el WebApi");
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 ErrorHelper.p_AEPSAD_Log(ex);
 
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest,ex.Message);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
             }
         }
 

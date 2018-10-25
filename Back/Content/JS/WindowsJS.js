@@ -26,6 +26,7 @@ function p_AEPSAD_save_ok(vMensaje) {
 }
 
 function p_AEPSAD_error(vMensaje) {
+
     $.confirm({
         icon: 'fas fa-times',
         title: 'Intranet - AEPSAD',

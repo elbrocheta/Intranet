@@ -1,0 +1,57 @@
+﻿@model Back.Models.Menu
+
+@{
+                /**/
+
+                ViewBag.Title = "Editar Items de menú";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2><i class="fa fa-pen"></i> Editar </h2>
+<hr />
+
+@using (Html.BeginForm("EditarMenuItems", "Menu", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.Texto, new { @class = "text-info" })<br />
+        @Html.TextBoxFor(model => model.Texto, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Texto, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Enlace, new { @class = "text-info" })<br />
+        @Html.TextBoxFor(model => model.Enlace, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Enlace, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NuevaVentana, new { @class = "text-info" })<br />
+        @Html.CheckBoxFor(model => model.NuevaVentana, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.NuevaVentana, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MenuGrupoId, new { @class = "text-info" })<br />
+        @Html.DropDownListFor(model => model.MenuGrupoId, Model.GruposMenu, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.MenuGrupoId, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.HiddenFor(model => model.Icono)
+
+    <div class="form-group">
+        @Html.Label("IconoFile", new { @class = "text-info" })<br />
+        @Html.TextBox("IconoFile", null, new { type = "file", @class = "form-control" })
+        @Html.ValidationMessage("IconoFile", "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-default" value="Guardar">
+    </div>
+}
+
+@if (ViewBag.JavaScriptFunction != null)
+{
+    <script type="text/javascript">
+            @Html.Raw(ViewBag.JavaScriptFunction)
+    </script>
+}

@@ -23,5 +23,6 @@ namespace WebApi.Models
         public string Icono { get; set; }
         public byte NuevaVentana { get; set; }
         public int Orden { get; set; }
+        public string Modulo { get; set; }
     }
 }
