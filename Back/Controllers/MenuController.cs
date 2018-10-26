@@ -125,8 +125,7 @@ namespace Back.Controllers
                 return View(model);
             }
         }
-
-
+        
         [HttpGet]
         public ActionResult EditarMenuItems(String id)
         {
@@ -232,6 +231,37 @@ namespace Back.Controllers
                 return View(model);
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult> EliminarMenuItems(String id)
+        {
+
+            try
+            {                
+                HttpClient _client = WebApiHelper.p_APESAD_HttpClient(SessionHelper.p_AEPSAD_get_usuario().Token);
+
+                HttpResponseMessage _response = await _client.DeleteAsync(WebApiHelper.ENDPOINT_MENU_DELETE + id);
+
+                if (_response.IsSuccessStatusCode)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.OK);
+                }
+                else
+                {
+                    ErrorHelper.p_AEPSAD_Log(_response.StatusCode.ToString());
+
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Error en el WebApi");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                ErrorHelper.p_AEPSAD_Log(ex);
+
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
+            }
+        }
+
 
         #region Grupos Menu
 
