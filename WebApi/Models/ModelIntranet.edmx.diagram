@@ -13,9 +13,9 @@
         <AssociationConnector Association="PruebasIntranet2019Model.FK_MenuGrupo_Modulos" />
         <EntityTypeShape EntityType="PruebasIntranet2019Model.Menu" Width="1.5" PointX="6.125" PointY="0.625" />
         <AssociationConnector Association="PruebasIntranet2019Model.FK_Menu_Menu" />
-        <EntityTypeShape EntityType="PruebasIntranet2019Model.vBack_GruposMenuList" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="PruebasIntranet2019Model.vFront_Menu" Width="1.5" PointX="2.5" PointY="3.75" />
         <EntityTypeShape EntityType="PruebasIntranet2019Model.vBack_Menu" Width="1.5" PointX="7.125" PointY="3.75" />
+        <EntityTypeShape EntityType="PruebasIntranet2019Model.vBack_GruposMenuList" Width="1.5" PointX="0.5" PointY="3.875" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

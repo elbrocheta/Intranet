@@ -9,7 +9,9 @@
 
 namespace WebApi.Models
 {
-
+    using System;
+    using System.Collections.Generic;
+    
     public partial class Menu
     {
         public int Id { get; set; }

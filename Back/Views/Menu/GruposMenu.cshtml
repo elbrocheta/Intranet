@@ -44,13 +44,13 @@
             @foreach (var _grupo in Model)
             {
                 <tr>
-                    <th scope="row">@_grupo.Id</th>
+                    <th scope="row">@_grupo.ModuloId</th>
                     <td>@_grupo.Modulo</td>
-                    <td>@_grupo.Nombre</td>
+                    <td>@_grupo.MenuGrupo</td>
                     <td>@_grupo.Orden</td>
                     <td>
-                        <button type="button" id="btnEditar_+ @_grupo.Id" class="btn btn-primary" onclick="p_AEPSAD_editar(@_grupo.Id)" title="Editar"><i class="fa fa-pen"></i></button>
-                        <button type="button" id="btnEliminar_+ @_grupo.Id" class="btn btn-danger"  onclick="p_AEPSAD_eliminar(@_grupo.Id)" title="Eliminar"><i class="fa fa-trash"></i></button>
+                        <button type="button" id="btnEditar_+ @_grupo.MenuGrupoId" class="btn btn-primary" onclick="p_AEPSAD_editar(@_grupo.MenuGrupoId)" title="Editar"><i class="fa fa-pen"></i></button>
+                        <button type="button" id="btnEliminar_+ @_grupo.MenuGrupoId" class="btn btn-danger"  onclick="p_AEPSAD_eliminar(@_grupo.MenuGrupoId)" title="Eliminar"><i class="fa fa-trash"></i></button>
                     </td>
                 </tr>
             }

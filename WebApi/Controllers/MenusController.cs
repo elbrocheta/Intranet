@@ -44,7 +44,13 @@ namespace WebApi.Controllers
         [HttpGet]
         public IQueryable<vBack_Menu> GetAll()
         {
-            return db.vBack_Menu.OrderBy(x => x.Orden);
+            try
+            {
+                return db.vBack_Menu.OrderBy(x => x.Orden);
+            }
+            catch (Exception ex) {
+                return null;
+            }
         }
 
         [Route("GetOne")]

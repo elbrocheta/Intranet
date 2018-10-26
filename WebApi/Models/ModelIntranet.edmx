@@ -58,16 +58,16 @@
 advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vBack_GruposMenuList' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vBack_GruposMenuList">
           <Key>
-            <PropertyRef Name="Modulo" />
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="MenuGrupoId" />
             <PropertyRef Name="ModuloId" />
-            <PropertyRef Name="Nombre" />
+            <PropertyRef Name="Modulo" />
+            <PropertyRef Name="MenuGrupo" />
             <PropertyRef Name="Orden" />
           </Key>
-          <Property Name="Modulo" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="MenuGrupoId" Type="int" Nullable="false" />
           <Property Name="ModuloId" Type="int" Nullable="false" />
-          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Modulo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="MenuGrupo" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Orden" Type="int" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
@@ -164,10 +164,10 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tien
           <EntitySet Name="NoticiasTipo" EntityType="Self.NoticiasTipo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="vBack_GruposMenuList" EntityType="Self.vBack_GruposMenuList" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vBack_GruposMenuList].[Modulo] AS [Modulo], 
-    [vBack_GruposMenuList].[Id] AS [Id], 
+    [vBack_GruposMenuList].[MenuGrupoId] AS [MenuGrupoId], 
     [vBack_GruposMenuList].[ModuloId] AS [ModuloId], 
-    [vBack_GruposMenuList].[Nombre] AS [Nombre], 
+    [vBack_GruposMenuList].[Modulo] AS [Modulo], 
+    [vBack_GruposMenuList].[MenuGrupo] AS [MenuGrupo], 
     [vBack_GruposMenuList].[Orden] AS [Orden]
     FROM [dbo].[vBack_GruposMenuList] AS [vBack_GruposMenuList]</DefiningQuery>
           </EntitySet>
@@ -233,9 +233,9 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tien
             <End Role="MenuGrupo" EntitySet="MenuGrupo" />
             <End Role="Menu" EntitySet="Menu" />
           </AssociationSet>
-          <EntitySet Name="vBack_GruposMenuList" EntityType="PruebasIntranet2019Model.vBack_GruposMenuList" />
           <EntitySet Name="vFront_Menu" EntityType="PruebasIntranet2019Model.vFront_Menu" />
           <EntitySet Name="vBack_Menu" EntityType="PruebasIntranet2019Model.vBack_Menu" />
+          <EntitySet Name="vBack_GruposMenuList" EntityType="PruebasIntranet2019Model.vBack_GruposMenuList" />
         </EntityContainer>
         <EntityType Name="Noticias">
           <Key>
@@ -322,20 +322,6 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tien
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="vBack_GruposMenuList">
-          <Key>
-            <PropertyRef Name="Modulo" />
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ModuloId" />
-            <PropertyRef Name="Nombre" />
-            <PropertyRef Name="Orden" />
-          </Key>
-          <Property Name="Modulo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ModuloId" Type="Int32" Nullable="false" />
-          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Orden" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="vFront_Menu">
           <Key>
             <PropertyRef Name="MenuGrupo" />
@@ -381,6 +367,20 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tien
           <Property Name="NuevaVentana" Type="Byte" Nullable="false" />
           <Property Name="Orden" Type="Int32" Nullable="false" />
           <Property Name="Modulo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vBack_GruposMenuList">
+          <Key>
+            <PropertyRef Name="MenuGrupoId" />
+            <PropertyRef Name="ModuloId" />
+            <PropertyRef Name="Modulo" />
+            <PropertyRef Name="MenuGrupo" />
+            <PropertyRef Name="Orden" />
+          </Key>
+          <Property Name="MenuGrupoId" Type="Int32" Nullable="false" />
+          <Property Name="ModuloId" Type="Int32" Nullable="false" />
+          <Property Name="Modulo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MenuGrupo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Orden" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -442,17 +442,6 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tien
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vBack_GruposMenuList">
-            <EntityTypeMapping TypeName="PruebasIntranet2019Model.vBack_GruposMenuList">
-              <MappingFragment StoreEntitySet="vBack_GruposMenuList">
-                <ScalarProperty Name="Orden" ColumnName="Orden" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Modulo" ColumnName="Modulo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vFront_Menu">
             <EntityTypeMapping TypeName="PruebasIntranet2019Model.vFront_Menu">
               <MappingFragment StoreEntitySet="vFront_Menu">
@@ -481,6 +470,17 @@ advertencia 6002: La tabla o vista 'PruebasIntranet2019.dbo.vFront_Menu' no tien
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
                 <ScalarProperty Name="MenuGrupo" ColumnName="MenuGrupo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vBack_GruposMenuList">
+            <EntityTypeMapping TypeName="PruebasIntranet2019Model.vBack_GruposMenuList">
+              <MappingFragment StoreEntitySet="vBack_GruposMenuList">
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+                <ScalarProperty Name="MenuGrupo" ColumnName="MenuGrupo" />
+                <ScalarProperty Name="Modulo" ColumnName="Modulo" />
+                <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
+                <ScalarProperty Name="MenuGrupoId" ColumnName="MenuGrupoId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

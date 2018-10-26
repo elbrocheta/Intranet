@@ -30,8 +30,8 @@ namespace WebApi.Models
         public virtual DbSet<MenuGrupo> MenuGrupo { get; set; }
         public virtual DbSet<Modulos> Modulos { get; set; }
         public virtual DbSet<Menu> Menu { get; set; }
-        public virtual DbSet<vBack_GruposMenuList> vBack_GruposMenuList { get; set; }
         public virtual DbSet<vFront_Menu> vFront_Menu { get; set; }
         public virtual DbSet<vBack_Menu> vBack_Menu { get; set; }
+        public virtual DbSet<vBack_GruposMenuList> vBack_GruposMenuList { get; set; }
     }
 }

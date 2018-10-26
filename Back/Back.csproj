@@ -179,6 +179,7 @@
   <ItemGroup>
     <Content Include="Content\Error.css" />
     <Content Include="Content\Index.css" />
+    <Content Include="Content\IndexOLD.css" />
     <Content Include="Content\JS\Modalloading.js" />
     <Content Include="Content\JS\WindowsJS.js" />
     <Content Include="favicon.ico" />
@@ -238,12 +239,13 @@
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Menu\MenuItems.cshtml" />
     <Content Include="Views\Noticias\Index.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\IndexOLD.cshtml" />
     <Content Include="Views\Menu\GruposMenu.cshtml" />
     <Content Include="Views\Menu\EditarGruposMenu.cshtml" />
     <Content Include="Views\Menu\CrearGruposMenu.cshtml" />
     <Content Include="Views\Menu\EditarMenuItems.cshtml" />
     <Content Include="Views\Menu\CrearMenuItems.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IntranetData\IntranetData.csproj">
