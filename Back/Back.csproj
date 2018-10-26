@@ -165,6 +165,7 @@
     <Compile Include="Helpers\DropDownListHelper.cs" />
     <Compile Include="Helpers\ErrorHelper.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
+    <Compile Include="Helpers\UploadImageHelper.cs" />
     <Compile Include="Helpers\WebApiHelper.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MenuGrupo.cs" />

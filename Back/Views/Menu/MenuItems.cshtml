@@ -1,4 +1,5 @@
 ﻿@model List<Back.Models.vBack_Menu>
+@using Back.Helpers
 
 @{
     ViewBag.Title = "Items de menú";
@@ -52,22 +53,22 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Icono</th>
                                         <th scope="col">Texto</th>
-                                        <th scope="col">Nueva ventana</th>  
+                                        <th scope="col">Nueva ventana</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var _item in Model.Where(x => x.ModuloId == _mo.ModuloId && x.MenuGrupoId == _mg.MenuGrupoId).Select(x => new { x.Id, x.Icono, x.Texto, x.NuevaVentana }).Distinct())
                                     {
-                                    <tr>
-                                        <td>@_item.Id</td>
-                                        <td><i class="@_item.Icono"></i></td>
-                                        <td>@_item.Texto</td>
-                                        <td>@(_item.NuevaVentana == true ? "Sí" : "No")</td>
-                                        <td>
-                                            <button type="button" id="btnEditar_+ @_item.Id" class="btn btn-primary" onclick="p_AEPSAD_editar(@_item.Id)" title="Editar"><i class="fa fa-pen"></i></button>
-                                            <button type="button" id="btnEliminar_+ @_item.Id" class="btn btn-danger" onclick="p_AEPSAD_eliminar(@_item.Id)" title="Eliminar"><i class="fa fa-trash"></i></button>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>@_item.Id</td>
+                                            <td> <img src="@ConfigHelper.URL_ICONS@_item.Icono" /></td>
+                                            <td>@_item.Texto</td>
+                                            <td>@(_item.NuevaVentana == true ? "Sí" : "No")</td>
+                                            <td>
+                                                <button type="button" id="btnEditar_+ @_item.Id" class="btn btn-primary" onclick="p_AEPSAD_editar(@_item.Id)" title="Editar"><i class="fa fa-pen"></i></button>
+                                                <button type="button" id="btnEliminar_+ @_item.Id" class="btn btn-danger" onclick="p_AEPSAD_eliminar(@_item.Id)" title="Eliminar"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>

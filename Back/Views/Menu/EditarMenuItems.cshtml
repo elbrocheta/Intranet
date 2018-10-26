@@ -1,4 +1,5 @@
 ﻿@model Back.Models.Menu
+@using  Back.Helpers
 
 @{
                 /**/
@@ -35,6 +36,8 @@
         @Html.DropDownListFor(model => model.MenuGrupoId, Model.GruposMenu, htmlAttributes: new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.MenuGrupoId, "", new { @class = "text-danger" })
     </div>
+
+    <img src="@ConfigHelper.URL_ICONS@Url.Content(Model.Icono)" alt="Image" />
 
     @Html.HiddenFor(model => model.Icono)
 

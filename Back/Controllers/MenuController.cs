@@ -67,20 +67,41 @@ namespace Back.Controllers
 
         [HttpPost]
         public ActionResult CrearMenuItems(Menu model, HttpPostedFileBase IconoFile)
-        {
-            model.GruposMenu = DropDownListHelper.p_AEPSAD_MenuGrupos(model.MenuGrupoId);
-                      
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        {  
             try
             {
+                model.GruposMenu = DropDownListHelper.p_AEPSAD_MenuGrupos(model.MenuGrupoId);
 
-                HttpClient _client = WebApiHelper.p_APESAD_HttpClient(SessionHelper.p_AEPSAD_get_usuario().Token);               
+                String _error = String.Empty;
+                String _icono = String.Empty;
+
+                bool _isFileUploaded = UploadImageHelper.p_AEPSAD_UploadImage(IconoFile, "IconoMenu_" + model.Id, ref _icono, ref _error);
+
+                if (!_isFileUploaded)
+                {
+                    ModelState.AddModelError("IconoFile", _error);
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
 
 
-                var _json = JsonConvert.SerializeObject(model);
+                HttpClient _client = WebApiHelper.p_APESAD_HttpClient(SessionHelper.p_AEPSAD_get_usuario().Token);
+
+                MenuModel _m = new MenuModel
+                {
+                    Id = model.Id,
+                    MenuGrupoId = model.MenuGrupoId,
+                    Texto = model.Texto,
+                    Enlace = model.Enlace,
+                    Icono = _icono,
+                    NuevaVentana = (model.NuevaVentana ? Convert.ToByte(1) : Convert.ToByte(0)),
+                    Orden = model.Orden
+                };
+
+                var _json = JsonConvert.SerializeObject(_m);
                 var _content = new StringContent(_json.ToString(), Encoding.UTF8, "application/json");
 
                 HttpResponseMessage _response = _client.PostAsync(WebApiHelper.ENDPOINT_MENU_CREATE, _content).Result;
@@ -152,55 +173,42 @@ namespace Back.Controllers
         [HttpPost]
         public ActionResult EditarMenuItems(Menu model, HttpPostedFileBase IconoFile)
         {
-            model.GruposMenu = DropDownListHelper.p_AEPSAD_MenuGrupos(model.MenuGrupoId);
-
-            var validImageTypes = new string[]
-            {
-                "image/gif",
-                "image/jpeg",
-                "image/pjpeg",
-                "image/png"
-            };
-
-            if (IconoFile == null || IconoFile.ContentLength == 0)
-            {
-                ModelState.AddModelError("IconoFile", "This field is required");
-            }
-            else if (!validImageTypes.Contains(IconoFile.ContentType))
-            {
-                ModelState.AddModelError("IconoFile", "Please choose either a GIF, JPG or PNG image.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            model.GruposMenu = DropDownListHelper.p_AEPSAD_MenuGrupos(model.MenuGrupoId);           
 
             try
             {
-                //Use Namespace called :  System.IO  
-                string FileName = Path.GetFileNameWithoutExtension(IconoFile.FileName);
 
-                //To Get File Extension  
-                string FileExtension = Path.GetExtension(IconoFile.FileName);
+                String _error = String.Empty;
+                String _icono = String.Empty;
 
-                //Add Current Date To Attached File Name  
-                FileName = "MenuIcon_" + model.Id.ToString() + FileExtension;
+                bool _isFileUploaded = UploadImageHelper.p_AEPSAD_UploadImage(IconoFile, "IconoMenu_" + model.Id, ref _icono, ref _error);
 
-                //Get Upload path from Web.Config file AppSettings.  
-                string UploadPath = Path.Combine(Server.MapPath("~/Uploads/Icons"), FileName);
+                if (!_isFileUploaded)
+                {
+                    ModelState.AddModelError("IconoFile", _error);
+                }
 
-                //Its Create complete path to store in server.  
-                model.Icono = FileName;
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
 
-                //To copy and save file into server.  
-                IconoFile.SaveAs(UploadPath);
+                MenuModel _m = new MenuModel
+                {
+                    Id = model.Id,
+                    MenuGrupoId = model.MenuGrupoId,
+                    Texto = model.Texto,
+                    Enlace = model.Enlace,
+                    Icono = _icono,
+                    NuevaVentana = (model.NuevaVentana ? Convert.ToByte(1) : Convert.ToByte(0)),
+                    Orden = model.Orden
+                };
 
 
                 HttpClient _client = WebApiHelper.p_APESAD_HttpClient(SessionHelper.p_AEPSAD_get_usuario().Token);
 
 
-                var _json = JsonConvert.SerializeObject(model);
+                var _json = JsonConvert.SerializeObject(_m);
                 var _content = new StringContent(_json.ToString(), Encoding.UTF8, "application/json");
 
                 HttpResponseMessage _response = _client.PutAsync(WebApiHelper.ENDPOINT_MENU_UPDATE, _content).Result;
